@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profil OSIS | SMA Buddhis Bodhicitta</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+    font-family:'Poppins',sans-serif;
+    color:#1f2937;
+    background:
+        linear-gradient(rgba(235,243,255,.94),rgba(245,248,255,.96)),
+        url("logo_osis_bodhicitta.png");
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    overflow-x:hidden;
+}
+.scroll-progress{
+    position:fixed;top:0;left:0;width:0%;height:4px;
+    background:linear-gradient(90deg,#1647c7,#4f8cff,#7ca9ff);
+    z-index:9999
+}
+nav{
+    position:fixed;top:15px;left:50%;transform:translateX(-50%);
+    width:90%;max-width:1200px;height:70px;padding:10px 25px;
+    display:flex;align-items:center;justify-content:space-between;
+    background:rgba(255,255,255,.72);
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.8);border-radius:50px;
+    box-shadow:0 10px 35px rgba(22,71,199,.12);z-index:1000
+}
+.logo{display:flex;align-items:center;gap:12px;color:#1647c7;font-weight:600;font-size:15px;white-space:nowrap}
+.logo img{width:48px;height:48px;object-fit:contain}
+.nav-links{display:flex;align-items:center;gap:8px;list-style:none}
+.nav-links a{
+    display:block;padding:10px 16px;color:#374151;text-decoration:none;
+    font-size:14px;font-weight:500;border-radius:25px;transition:.3s
+}
+.nav-links a:hover{color:#1647c7;background:rgba(22,71,199,.08)}
+
+.hero{
+    min-height:100vh;padding:150px 7% 100px;display:flex;
+    align-items:center;justify-content:center;text-align:center;position:relative
+}
+.hero:before,.hero:after{
+    content:"";position:absolute;border-radius:50%;filter:blur(80px);z-index:-1
+}
+.hero:before{width:500px;height:500px;background:rgba(80,140,255,.15);top:10%;left:10%}
+.hero:after{width:400px;height:400px;background:rgba(120,170,255,.12);bottom:5%;right:10%}
+.hero-content{width:100%;max-width:850px;animation:fadeUp 1s ease}
+.hero-content img{
+    width:180px;height:180px;object-fit:contain;margin-bottom:25px;
+    filter:drop-shadow(0 15px 25px rgba(22,71,199,.18));
+    animation:floating 4s ease-in-out infinite
+}
+.hero-label,.section-label{
+    display:inline-block;color:#1647c7;font-size:13px;font-weight:600;
+    letter-spacing:2px;text-transform:uppercase
+}
+.hero-label{
+    padding:8px 18px;margin-bottom:18px;background:rgba(255,255,255,.65);
+    border:1px solid rgba(22,71,199,.15);border-radius:30px
+}
+.hero-content h1,.section-header h2{
+    font-family:'Playfair Display',serif;color:#172554
+}
+.hero-content h1{font-size:clamp(40px,6vw,70px);line-height:1.15;margin-bottom:20px}
+.hero-content h1 span{color:#1647c7}
+.hero-content p{max-width:650px;margin:auto;color:#64748b;font-size:17px;line-height:1.9}
+
+section{scroll-margin-top:100px}
+.section-header{text-align:center;margin-bottom:60px}
+.section-label{margin-bottom:10px}
+.section-header h2{font-size:clamp(35px,5vw,48px);margin-bottom:15px}
+.section-header p{color:#64748b;font-size:16px}
+
+.members,.gallery{padding:110px 7%}
+.member-grid{
+    max-width:1200px;margin:auto;display:grid;
+    grid-template-columns:repeat(3,1fr);gap:28px
+}
+.member-card{
+    position:relative;padding:35px 25px;text-align:center;
+    background:rgba(255,255,255,.62);
+    backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,.85);border-radius:25px;
+    box-shadow:0 15px 40px rgba(30,64,175,.08);
+    transition:transform .4s ease,box-shadow .4s ease;
+    overflow:hidden;opacity:0;transform:translateY(30px);
+    cursor:pointer
+}
+.member-card.show{opacity:1;transform:translateY(0)}
+.member-card:before{
+    content:"";position:absolute;top:0;left:0;width:100%;height:4px;
+    background:linear-gradient(90deg,#1647c7,#6ea2ff)
+}
+.member-card:hover{
+    transform:translateY(-12px);
+    box-shadow:0 25px 50px rgba(22,71,199,.16)
+}
+.member-card img{
+    width:145px;height:145px;object-fit:cover;border-radius:50%;
+    border:5px solid white;box-shadow:0 10px 25px rgba(22,71,199,.15);
+    margin-bottom:20px;transition:.4s
+}
+.member-card:hover img{transform:scale(1.06)}
+.member-card h3{color:#172554;font-size:18px;font-weight:600;margin-bottom:8px}
+.member-card p{color:#64748b;font-size:14px;line-height:1.7}
+.member-card p:first-of-type{color:#1647c7;font-weight:600}
+.click-hint{
+    margin-top:15px;color:#1647c7;font-size:11px;
+    font-weight:600;letter-spacing:.5px
+}
+
+/* POPUP BIODATA */
+.profile-modal{
+    position:fixed;inset:0;padding:30px;
+    background:rgba(15,23,42,.55);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;visibility:hidden;pointer-events:none;
+    transition:.35s ease;z-index:5000
+}
+.profile-modal.active{
+    opacity:1;visibility:visible;pointer-events:auto
+}
+.profile-box{
+    width:min(900px,100%);
+    max-height:90vh;
+    overflow:auto;
+    display:grid;grid-template-columns:330px 1fr;
+    background:rgba(255,255,255,.92);
+    border:1px solid rgba(255,255,255,.9);
+    border-radius:30px;
+    box-shadow:0 30px 80px rgba(15,23,42,.3);
+    transform:translateY(30px) scale(.96);
+    transition:.35s ease;
+    position:relative
+}
+.profile-modal.active .profile-box{
+    transform:translateY(0) scale(1)
+}
+.profile-photo{
+    min-height:480px;padding:40px 25px;
+    display:flex;align-items:center;justify-content:center;
+    flex-direction:column;text-align:center;
+    background:linear-gradient(145deg,#dbeafe,#eff6ff)
+}
+.profile-photo img{
+    width:220px;height:220px;object-fit:cover;
+    border-radius:50%;border:8px solid white;
+    box-shadow:0 20px 40px rgba(22,71,199,.2);
+    margin-bottom:25px
+}
+.profile-photo h2{
+    font-family:'Playfair Display',serif;
+    color:#172554;font-size:28px;margin-bottom:8px
+}
+.profile-photo .position{
+    color:#1647c7;font-weight:600;font-size:14px
+}
+.profile-info{padding:45px 45px}
+.profile-info h3{
+    font-family:'Playfair Display',serif;
+    color:#172554;font-size:34px;margin-bottom:10px
+}
+.profile-info .subtitle{
+    color:#64748b;font-size:14px;margin-bottom:30px
+}
+.bio-list{display:grid;gap:14px}
+.bio-row{
+    display:grid;grid-template-columns:140px 1fr;
+    gap:15px;padding:14px 0;
+    border-bottom:1px solid #e5e7eb
+}
+.bio-label{color:#64748b;font-size:13px;font-weight:500}
+.bio-value{color:#172554;font-size:14px;font-weight:600}
+.close-modal{
+    position:absolute;top:18px;right:20px;
+    width:42px;height:42px;border:none;border-radius:50%;
+    background:white;color:#172554;font-size:24px;
+    cursor:pointer;box-shadow:0 8px 20px rgba(15,23,42,.12);
+    transition:.3s;z-index:2
+}
+.close-modal:hover{background:#1647c7;color:white;transform:rotate(90deg)}
+
+.gallery-grid{
+    max-width:1150px;margin:0 auto 60px;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:25px
+}
+.gallery-card{
+    overflow:hidden;border-radius:25px;
+    background:rgba(255,255,255,.7);
+    box-shadow:0 15px 35px rgba(30,64,175,.1);
+    transition:transform .4s ease
+}
+.gallery-card:hover{transform:translateY(-8px)}
+.gallery-item{height:280px;overflow:hidden;position:relative}
+.gallery-item:after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(transparent 60%,rgba(0,0,0,.35));
+    opacity:0;transition:.4s
+}
+.gallery-card:hover .gallery-item:after{opacity:1}
+.gallery-item img{
+    width:100%;height:100%;object-fit:cover;
+    display:block;transition:transform .6s
+}
+.gallery-card:hover .gallery-item img{transform:scale(1.08)}
+.gallery-caption{
+    padding:15px;text-align:center;color:#172554;
+    font-size:14px;font-weight:600
+}
+.back-button{
+    display:block;width:fit-content;margin:auto;padding:14px 28px;
+    background:linear-gradient(135deg,#1647c7,#3778e8);
+    color:white;text-decoration:none;border-radius:30px;
+    font-weight:600;font-size:14px;
+    box-shadow:0 10px 25px rgba(22,71,199,.25);transition:.3s
+}
+.back-button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 15px 30px rgba(22,71,199,.35)
+}
+
+footer{
+    padding:70px 7% 35px;text-align:center;
+    background:linear-gradient(135deg,#111827,#172554);color:white
+}
+footer img{
+    width:100px;height:100px;object-fit:contain;margin-bottom:20px;
+    filter:drop-shadow(0 10px 20px rgba(0,0,0,.3))
+}
+footer h3{
+    font-family:'Playfair Display',serif;
+    font-size:25px;margin-bottom:12px
+}
+footer p{color:#cbd5e1;font-size:14px;line-height:1.8;margin-top:8px}
+
+#topButton{
+    position:fixed;right:25px;bottom:25px;width:48px;height:48px;
+    border:none;border-radius:50%;background:#1647c7;color:white;
+    font-size:20px;cursor:pointer;opacity:0;visibility:hidden;
+    transition:.3s;box-shadow:0 10px 25px rgba(22,71,199,.3);z-index:999
+}
+#topButton.show{opacity:1;visibility:visible}
+
+@keyframes floating{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-12px)}
+}
+@keyframes fadeUp{
+    from{opacity:0;transform:translateY(30px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+/* TABLET */
+@media(max-width:850px){
+    nav{width:94%;height:65px;padding:8px 15px}
+    .logo{gap:8px;font-size:11px}
+    .logo img{width:42px;height:42px}
+    .logo span{max-width:130px;white-space:normal;line-height:1.2}
+    .nav-links{gap:2px}
+    .nav-links a{padding:8px 7px;font-size:11px}
+    .member-grid,.gallery-grid{grid-template-columns:repeat(2,1fr)}
+    .profile-box{grid-template-columns:280px 1fr}
+    .profile-photo img{width:180px;height:180px}
+    .profile-info{padding:35px}
+}
+
+/* HP */
+@media(max-width:550px){
+    html,body{width:100%;max-width:100%;overflow-x:hidden}
+    nav{
+        top:10px;width:calc(100% - 20px);
+        height:62px;padding:6px 10px
+    }
+    .logo{gap:5px;font-size:9px;max-width:105px;flex-shrink:1}
+    .logo img{width:38px;height:38px;flex-shrink:0}
+    .logo span{max-width:70px;line-height:1.1;white-space:normal}
+    .nav-links{gap:0;flex-shrink:0}
+    .nav-links a{
+        padding:7px 5px;font-size:10px;white-space:nowrap
+    }
+
+    .hero{width:100%;padding:130px 6% 80px}
+    .hero-content{width:100%;max-width:100%}
+    .hero-content img{width:140px;height:140px}
+    .hero-content h1{font-size:38px}
+    .hero-content p{font-size:15px;line-height:1.8}
+
+    .members,.gallery{width:100%;padding:80px 6%}
+    .member-grid,.gallery-grid{
+        width:100%;grid-template-columns:1fr;gap:20px
+    }
+    .member-card{width:100%}
+    .gallery-item{height:240px}
+
+    .section-header{margin-bottom:40px}
+    .section-header h2{font-size:35px}
+    .section-header p{font-size:14px;line-height:1.7}
+
+    /* POPUP HP: foto di atas, biodata di bawah */
+    .profile-modal{padding:15px}
+    .profile-box{
+        width:100%;max-height:92vh;
+        display:block;border-radius:25px
+    }
+    .profile-photo{
+        min-height:auto;padding:35px 20px 25px
+    }
+    .profile-photo img{
+        width:150px;height:150px;margin-bottom:15px
+    }
+    .profile-photo h2{font-size:25px}
+    .profile-info{padding:25px 22px 30px}
+    .profile-info h3{font-size:27px}
+    .bio-row{
+        grid-template-columns:1fr;
+        gap:4px;padding:12px 0
+    }
+    .close-modal{
+        top:12px;right:12px;
+        width:38px;height:38px;font-size:20px
+    }
+
+    footer{width:100%;padding:60px 6% 30px}
+    footer h3{font-size:21px}
+    footer p{font-size:13px}
+    #topButton{
+        width:45px;height:45px;right:15px;bottom:15px
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="scroll-progress" id="progressBar"></div>
+
+<nav>
+    <div class="logo">
+        <img src="logo_osis_bodhicitta.png" alt="Logo OSIS">
+        <span>OSIS SMA BUDDHIS BODHICITTA</span>
+    </div>
+
+    <ul class="nav-links">
+        <li><a href="index.html">Beranda</a></li>
+        <li><a href="profil.html">Profil</a></li>
+        <li><a href="#anggota">Anggota</a></li>
+        <li><a href="#galeri">Galeri</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <img src="logo_osis_bodhicitta.png" alt="Logo OSIS">
+        <span class="hero-label">Student Organization</span>
+        <h1>OSIS SMA Buddhis <span>Bodhicitta</span></h1>
+        <p>Bersama membangun sekolah yang aktif, kreatif, berkarakter, dan berprestasi.</p>
+    </div>
+</section>
+
+<section class="members" id="anggota">
+    <div class="section-header">
+        <span class="section-label">Our Team</span>
+        <h2>Profil Anggota OSIS</h2>
+        <p>Klik salah satu anggota untuk melihat biodata</p>
+    </div>
+
+    <div class="member-grid">
+
+        <div class="member-card" data-name="Evelyn C." data-position="Ketua OSIS" data-class="XII" data-division="Pengurus Inti" data-motto="One Blood, One Feeling." data-image="osis1.jpg">
+            <img src="osis1.jpg" alt="Evelyn C."><h3>Evelyn C.</h3><p>Ketua OSIS</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Alexander" data-position="Wakil Ketua 1" data-class="XII" data-division="Pengurus Inti" data-motto="Bersama untuk berkembang." data-image="osis2.jpg">
+            <img src="osis2.jpg" alt="Alexander"><h3>Alexander</h3><p>Wakil Ketua 1</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Devin O." data-position="Wakil Ketua 2" data-class="XII" data-division="Pengurus Inti" data-motto="Berani berproses, siap berprestasi." data-image="osis3.jpg">
+            <img src="osis3.jpg" alt="Devin O."><h3>Devin O.</h3><p>Wakil Ketua 2</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Veronica V." data-position="Sekretaris" data-class="XII" data-division="Sekretariat" data-motto="Rapi dalam administrasi, solid dalam organisasi." data-image="osis4.jpg">
+            <img src="osis4.jpg" alt="Veronica V."><h3>Veronica V.</h3><p>Sekretaris</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Michelle W.T." data-position="Wakil Sekretaris" data-class="XI" data-division="Sekretariat" data-motto="Bekerja dengan teliti dan bertanggung jawab." data-image="osis5.jpg">
+            <img src="osis5.jpg" alt="Michelle W.T."><h3>Michelle W.T.</h3><p>Wakil Sekretaris</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Richella E." data-position="Bendahara" data-class="XII" data-division="Keuangan" data-motto="Amanah dalam mengelola tanggung jawab." data-image="osis6.jpg">
+            <img src="osis6.jpg" alt="Richella E."><h3>Richella E.</h3><p>Bendahara</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Callista M." data-position="Wakil Bendahara" data-class="XII" data-division="Keuangan" data-motto="Teliti, jujur, dan bertanggung jawab." data-image="osis7.jpg">
+            <img src="osis7.jpg" alt="Callista M."><h3>Callista M.</h3><p>Wakil Bendahara</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Michael W." data-position="Ketua IPTEK" data-class="XII" data-division="IPTEK" data-motto="Teknologi untuk kreativitas dan kemajuan." data-image="osis8.jpg">
+            <img src="osis8.jpg" alt="Michael W."><h3>Michael W.</h3><p>Ketua IPTEK</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Kent H.O" data-position="Ketua Dokumentasi" data-class="XII" data-division="Dokumentasi" data-motto="Mengabadikan momen, menyimpan cerita." data-image="osis9.jpg">
+            <img src="osis9.jpg" alt="Kent H.O"><h3>Kent H.O</h3><p>Ketua Dokumentasi</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Hexsa T.W." data-position="Ketua Sound System" data-class="XII" data-division="Sound System" data-motto="Suara yang baik menyatukan suasana." data-image="osis10.jpg">
+            <img src="osis10.jpg" alt="Hexsa T.W."><h3>Hexsa T.W.</h3><p>Ketua Sound System</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Vincent" data-position="Ketua HUMAS" data-class="XII" data-division="HUMAS" data-motto="Membangun komunikasi dan hubungan yang baik." data-image="osis11.jpg">
+            <img src="osis11.jpg" alt="Vincent"><h3>Vincent</h3><p>Ketua HUMAS</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Lius V." data-position="Wakil HUMAS" data-class="XI" data-division="HUMAS" data-motto="Komunikasi adalah kunci kebersamaan." data-image="osis12.jpg">
+            <img src="osis12.jpg" alt="Lius V."><h3>Lius V.</h3><p>Wakil HUMAS</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Ryan O." data-position="Ketua Lapangan" data-class="XI" data-division="Lapangan" data-motto="Siap bergerak dan bekerja sama." data-image="osis13.jpg">
+            <img src="osis13.jpg" alt="Ryan O."><h3>Ryan O.</h3><p>Ketua Lapangan</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Stephanie L." data-position="Ketua Sosial" data-class="XI" data-division="Sosial" data-motto="Peduli, berbagi, dan menginspirasi." data-image="osis14.jpg">
+            <img src="osis14.jpg" alt="Stephanie L."><h3>Stephanie L.</h3><p>Ketua Sosial</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Jacqueline A." data-position="Wakil Sosial" data-class="XI" data-division="Sosial" data-motto="Kebaikan dimulai dari kepedulian." data-image="osis15.jpg">
+            <img src="osis15.jpg" alt="Jacqueline A."><h3>Jacqueline A.</h3><p>Wakil Sosial</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Zavier T." data-position="Ketua Olahraga" data-class="XII" data-division="Olahraga" data-motto="Sportif, aktif, dan pantang menyerah." data-image="osis16.jpg">
+            <img src="osis16.jpg" alt="Zavier T."><h3>Zavier T.</h3><p>Ketua Olahraga</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Kevin V.H." data-position="Ketua Basket" data-class="XII" data-division="Basket" data-motto="Bermain bersama, tumbuh bersama." data-image="osis17.jpg">
+            <img src="osis17.jpg" alt="Kevin V.H."><h3>Kevin V.H.</h3><p>Ketua Basket</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Steven L." data-position="Ketua Futsal" data-class="XII" data-division="Futsal" data-motto="Kerja sama membawa kemenangan." data-image="osis18.jpg">
+            <img src="osis18.jpg" alt="Steven L."><h3>Steven L.</h3><p>Ketua Futsal</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Charles" data-position="Ketua E-Sports" data-class="XI" data-division="E-Sports" data-motto="Strategi, fokus, dan sportivitas." data-image="osis19.jpg">
+            <img src="osis19.jpg" alt="Charles"><h3>Charles</h3><p>Ketua E-Sports</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Shervin A." data-position="Ketua Bola Tangan" data-class="XII" data-division="Bola Tangan" data-motto="Solid dalam tim, semangat dalam permainan." data-image="osis20.jpg">
+            <img src="osis20.jpg" alt="Shervin A."><h3>Shervin A.</h3><p>Ketua Bola Tangan</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Priscillia B." data-position="Ketua Kreatif" data-class="XI" data-division="Kreatif" data-motto="Berani berkreasi dan menciptakan hal baru." data-image="osis21.jpg">
+            <img src="osis21.jpg" alt="Priscillia B."><h3>Priscillia B.</h3><p>Ketua Kreatif</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Evelyn A." data-position="Wakil Kreatif" data-class="XI" data-division="Kreatif" data-motto="Ide sederhana dapat menjadi karya luar biasa." data-image="osis22.jpg">
+            <img src="osis22.jpg" alt="Evelyn A."><h3>Evelyn A.</h3><p>Wakil Kreatif</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Felicia D." data-position="Ketua Dekorasi" data-class="XI" data-division="Dekorasi" data-motto="Menciptakan ruang yang indah dan bermakna." data-image="osis23.jpg">
+            <img src="osis23.jpg" alt="Felicia D."><h3>Felicia D.</h3><p>Ketua Dekorasi</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Deybbee F." data-position="Ketua Medsos" data-class="XII" data-division="Media Sosial" data-motto="Menyebarkan informasi positif dan inspiratif." data-image="osis24.jpg">
+            <img src="osis24.jpg" alt="Deybbee F."><h3>Deybbee F.</h3><p>Ketua Medsos</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Keane N." data-position="Ketua Rohani" data-class="XII" data-division="Rohani" data-motto="Menumbuhkan nilai kebaikan dan kebersamaan." data-image="osis25.jpg">
+            <img src="osis25.jpg" alt="Keane N."><h3>Keane N.</h3><p>Ketua Rohani</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+        <div class="member-card" data-name="Wilson C" data-position="Wakil Rohani" data-class="XII" data-division="Rohani" data-motto="Bersama menebarkan kebaikan." data-image="osis26.jpg">
+            <img src="osis26.jpg" alt="Wilson C"><h3>Wilson C</h3><p>Wakil Rohani</p><div class="click-hint">KLIK UNTUK LIHAT BIODATA</div>
+        </div>
+
+    </div>
+</section>
+
+<section class="gallery" id="galeri">
+    <div class="section-header">
+        <span class="section-label">Our Memories</span>
+        <h2>Galeri OSIS</h2>
+        <p>Dokumentasi kegiatan OSIS SMA Buddhis Bodhicitta</p>
+    </div>
+
+    <div class="gallery-grid">
+        <div class="gallery-card">
+            <div class="gallery-item"><img src="foto1.jpg" alt="Pelantikan OSIS"></div>
+            <div class="gallery-caption">Pelantikan OSIS</div>
+        </div>
+        <div class="gallery-card">
+            <div class="gallery-item"><img src="foto2.jpg" alt="Masa Pengenalan Lingkungan Sekolah"></div>
+            <div class="gallery-caption">Masa Pengenalan Lingkungan Sekolah (MPLS)</div>
+        </div>
+        <div class="gallery-card"><div class="gallery-item"><img src="galeri3.jpg" alt="Galeri 3"></div></div>
+        <div class="gallery-card"><div class="gallery-item"><img src="galeri4.jpg" alt="Galeri 4"></div></div>
+        <div class="gallery-card"><div class="gallery-item"><img src="galeri5.jpg" alt="Galeri 5"></div></div>
+        <div class="gallery-card"><div class="gallery-item"><img src="galeri6.jpg" alt="Galeri 6"></div></div>
+    </div>
+
+    <a href="index.html" class="back-button">← Kembali ke Beranda</a>
+</section>
+
+<footer>
+    <img src="logo_osis_bodhicitta.png" alt="Logo OSIS">
+    <h3>OSIS SMA BUDDHIS BODHICITTA</h3>
+    <p>Bersama membangun generasi yang aktif, kreatif, berkarakter, dan berprestasi.</p>
+    <p>© 2026 OSIS SMA BUDDHIS BODHICITTA</p>
+</footer>
+
+<!-- POPUP BIODATA -->
+<div class="profile-modal" id="profileModal">
+    <div class="profile-box" role="dialog" aria-modal="true" aria-labelledby="modalName">
+        <button class="close-modal" id="closeModal" aria-label="Tutup">×</button>
+
+        <div class="profile-photo">
+            <img id="modalImage" src="" alt="Foto anggota">
+            <h2 id="modalName">Nama Anggota</h2>
+            <div class="position" id="modalPosition">Jabatan</div>
+        </div>
+
+        <div class="profile-info">
+            <h3 id="modalTitle">Biodata Anggota</h3>
+            <p class="subtitle">Informasi pengurus OSIS SMA Buddhis Bodhicitta</p>
+
+            <div class="bio-list">
+                <div class="bio-row">
+                    <div class="bio-label">Nama Lengkap</div>
+                    <div class="bio-value" id="bioName">-</div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-label">Jabatan</div>
+                    <div class="bio-value" id="bioPosition">-</div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-label">Kelas</div>
+                    <div class="bio-value" id="bioClass">-</div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-label">Divisi</div>
+                    <div class="bio-value" id="bioDivision">-</div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-label">Motto</div>
+                    <div class="bio-value" id="bioMotto">-</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="topButton" onclick="scrollToTop()">↑</button>
+
+<script>
+/* Scroll progress */
+window.addEventListener("scroll", function(){
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    document.getElementById("progressBar").style.width = progress + "%";
+});
+
+/* Tombol kembali ke atas */
+const topButton = document.getElementById("topButton");
+
+window.addEventListener("scroll", function(){
+    if(window.scrollY > 500){
+        topButton.classList.add("show");
+    }else{
+        topButton.classList.remove("show");
+    }
+});
+
+function scrollToTop(){
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+/* Animasi kartu anggota */
+const cards = document.querySelectorAll(".member-card");
+
+const observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+        if(entry.isIntersecting){
+            entry.target.classList.add("show");
+            observer.unobserve(entry.target);
+        }
+    });
+},{threshold:0.1});
+
+cards.forEach(function(card){
+    observer.observe(card);
+});
+
+/* Popup biodata */
+const modal = document.getElementById("profileModal");
+const closeModal = document.getElementById("closeModal");
+
+const modalImage = document.getElementById("modalImage");
+const modalName = document.getElementById("modalName");
+const modalPosition = document.getElementById("modalPosition");
+
+const bioName = document.getElementById("bioName");
+const bioPosition = document.getElementById("bioPosition");
+const bioClass = document.getElementById("bioClass");
+const bioDivision = document.getElementById("bioDivision");
+const bioMotto = document.getElementById("bioMotto");
+
+cards.forEach(function(card){
+    card.addEventListener("click", function(){
+        const name = card.dataset.name;
+        const position = card.dataset.position;
+        const studentClass = card.dataset.class;
+        const division = card.dataset.division;
+        const motto = card.dataset.motto;
+        const image = card.dataset.image;
+
+        modalImage.src = image;
+        modalImage.alt = "Foto " + name;
+
+        modalName.textContent = name;
+        modalPosition.textContent = position;
+
+        bioName.textContent = name;
+        bioPosition.textContent = position;
+        bioClass.textContent = studentClass;
+        bioDivision.textContent = division;
+        bioMotto.textContent = motto;
+
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+    });
+});
+
+/* Tutup popup */
+function closeProfileModal(){
+    modal.classList.remove("active");
+    document.body.style.overflow = "";
+}
+
+closeModal.addEventListener("click", closeProfileModal);
+
+/* Klik area gelap untuk menutup */
+modal.addEventListener("click", function(event){
+    if(event.target === modal){
+        closeProfileModal();
+    }
+});
+
+/* Tombol Escape untuk menutup */
+document.addEventListener("keydown", function(event){
+    if(event.key === "Escape" && modal.classList.contains("active")){
+        closeProfileModal();
+    }
+});
+</script>
+
+</body>
+</html>
